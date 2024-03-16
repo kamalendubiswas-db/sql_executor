@@ -33,33 +33,33 @@ To get started with SQL Executor, follow these steps:
 ## Project
 ```
 ├── README.md
-├── config #optional config 
-├── lib #base code            
+├── config                                  #optional config 
+├── lib                                     #base code            
 │   ├── connect.py
 │   ├── connection.py
 │   ├── sql_parser.py
 │   ├── task_executor.py
 │   └── task_generator.py
-├── no_used #test files
+├── no_used                                 #test files not used
 │   ├── demo_task_executor.py
 │   ├── run.py
 │   └── test.py
 ├── requirements.txt
-├── runs #target directory
-│   ├── DAGs #dags generated
+├── runs                                    #target directory
+│   ├── DAGs                                #dags generated
 │   │   ├── 1710605017_dag_run.png
-│   ├── dependencies #dependecy yaml files
+│   ├── dependencies                        #dependecy yaml files
 │   │   ├── 1710605017_dependencies.yaml
-│   └── executed_sql #executed sql files
-│       ├── 1710605017 #unix epoch
+│   └── executed_sql                        #executed sql files
+│       ├── 1710605017                      #unix epoch
 │       │   ├── business_order.sql
 │       │   ├── dim_customer.sql
 │       │   ├── dim_order.sql
 │       │   ├── fact_order.sql
 │       │   ├── raw_customers.sql
 │       │   └── raw_orders.sql
-├── scheduler.py #main
-└── source_sql #source directory for sql files
+├── scheduler.py                            #main scheduler
+└── source_sql                              #source directory for sql files
     ├── business
     │   └── business_order.sql
     ├── dimension
