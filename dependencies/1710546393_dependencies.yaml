@@ -1,0 +1,9 @@
+business_order.sql:
+- fact_order.sql
+dim_customer.sql:
+- raw_customers.sql
+dim_order.sql:
+- raw_orders.sql
+fact_order.sql:
+- dim_order.sql
+- dim_customer.sql
