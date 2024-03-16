@@ -1,5 +1,12 @@
+# exclude everything
 .sqlglot
-runs/DAGs/*.*
-runs/dependencies/*.*
-runs/executed_sql/*
 lib/connect.py
+runs/DAGs/*
+runs/dependencies/*
+runs/executed_sql/*
+
+# exception to the rule
+!runs/DAGs/.gitkeep
+!runs/dependencies/.gitkeep 
+!runs/executed_sql/.gitkeep 
+

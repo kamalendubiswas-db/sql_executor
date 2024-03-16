@@ -1,3 +1,5 @@
-pip install databricks-sql-connector
-pip install networkx
-pip3 install "sqlglot[rs]"
+pip install "databricks-sql-connector"
+pip install "networkx"
+pip install "sqlglot[rs]"
+pip install "pyyaml"
+pip install "matplotlib"
