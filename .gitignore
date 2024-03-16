@@ -1,1 +1,5 @@
 .sqlglot
+runs/DAGs/*.*
+runs/dependencies/*.*
+runs/executed_sql/*
+lib/connect.py

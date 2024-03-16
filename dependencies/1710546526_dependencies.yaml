@@ -1,9 +1,0 @@
-business_order:
-- fact_order
-dim_customer:
-- raw_customers
-dim_order:
-- raw_orders
-fact_order:
-- dim_order
-- dim_customer
