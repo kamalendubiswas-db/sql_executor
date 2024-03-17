@@ -74,7 +74,10 @@ To get started with SQL Executor, follow these steps:
 
 ## Assumptions
 1. Databricks Catalog and Schema already exists.
-2. All the leaf source tables are executed as `select 1`. This is to avoid breaking the dependencies.
-3. If the SQL are parameterised, add the replacement logic in the `sql_parser.py`. As of none of the sql scripts are paramerterized
-4. The generated DAG, dependency yaml and the executed sql scripts are prefixed with UNIX Epoch for auditing. Regular cleanup is needed.
+2. If the SQL are parameterised, add the replacement logic in the `sql_parser.py`. As of none of the sql scripts are paramerterized
+3. The generated DAG, dependency yaml and the executed sql scripts are prefixed with UNIX Epoch for auditing. Regular cleanup is needed.
 
+## Limitations
+1. All the leaf source tables are executed as `select 1`. This is to avoid breaking the dependencies.
+2. Multiple sql statements in one file is not supported.
+3. Table name should be same as sql file name. Aliasing is not supported.
