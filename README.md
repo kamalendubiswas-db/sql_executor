@@ -8,6 +8,8 @@ SQL Executor is a Python-based project designed to automate the parsing, executi
 
 2. **Dependency Graph Generation**: Leverages [NetworkX](https://networkx.org/) to generate a dependency graph from the parsed SQL scripts. The graph outlines the execution order and saves the dependencies as a YAML file for easy tracking and management.
 
+![Dependency Graph](images/1710774640_dag_run.png)
+
 3. **Parameter Replacement[optional]**: If the SQL scripts are parameterized, the project includes functionality to replace the parameters with actual values before execution, ensuring the scripts are tailored to the current context.
 
 4. **SQL Execution in Databricks**: Executes the SQL scripts in a Databricks SQL Warehouse, harnessing the power and scalability of Databricks for data processing and analysis.
