@@ -3,7 +3,7 @@ from datetime import datetime
 # Import custom library functions
 from lib.sql_parser import find_sql_files_and_parse, write_dependencies_to_yaml
 from lib.task_generator import generate_graph, execute_tasks_sequentially, save_dag
-from lib.connection import get_connection
+from lib.connect import get_connection
 
 try:
     connection = get_connection()
@@ -13,7 +13,7 @@ except Exception as e:
     exit()
 
 # Specify the root directories for source SQL, dependencies, and DAGs
-source_sql_directory = 'source_sql/'
+source_sql_directory = 'source_sql'
 target_sql_directory = 'runs/executed_sql'
 dependency_directory = 'runs/dependencies'
 dag_directory = 'runs/DAGs'

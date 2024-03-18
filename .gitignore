@@ -4,6 +4,7 @@ lib/connect.py
 runs/DAGs/*
 runs/dependencies/*
 runs/executed_sql/*
+.DS_Store
 
 # exception to the rule
 !runs/DAGs/.gitkeep
