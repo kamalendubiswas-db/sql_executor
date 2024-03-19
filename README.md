@@ -76,6 +76,7 @@ To get started with SQL Executor, follow these steps:
 
 ## Assumptions
 1. Databricks Catalog and Schema already exists.
+2. All the required sql files are avaiable in the `source_sql` folder.
 2. If the SQL are parameterised, add the replacement logic in the `sql_parser.py`. As of none of the sql scripts are paramerterized
 3. The generated DAG, dependency yaml and the executed sql scripts are prefixed with UNIX Epoch for auditing. Regular cleanup is needed.
 

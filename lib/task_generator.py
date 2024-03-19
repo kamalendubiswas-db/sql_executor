@@ -27,10 +27,15 @@ def generate_graph(dependecy_yaml_file):
 
     # Add nodes and edges based on the YAML configuration
     for task, deps in dependencies.items():
-        G.add_node(task)  # Add task node
-        for dep in deps:
-            G.add_node(dep)  # Add dependency node
-            G.add_edge(dep, task)  # Add directed edge from dependency to task
+        try:
+            G.add_node(task)  # Add task node
+            if deps:
+                for dep in deps:
+                    G.add_node(dep)  # Add dependency node
+                    G.add_edge(dep, task)  # Add directed edge from dependency to task
+        except Exception as e:
+            print(f"Error generating graph for task -  {task}: {e}")
+            raise
 
     # Ensure the graph is a DAG
     if not nx.is_directed_acyclic_graph(G):
@@ -67,7 +72,7 @@ def execute_tasks_sequentially(graph, execution_order,directory_name, cursor):
                 print(f"Task execution resulted in an exception: {e}")
 
 
-def save_dag(G, dag_name, node_color, edge_color):
+def save_dag(G, dag_name, node_color, edge_color, node_size):
     """
     Save the directed graph as a PNG image.
     
@@ -78,8 +83,8 @@ def save_dag(G, dag_name, node_color, edge_color):
         edge_color (str): The color code for the edges.
     """
     try:
-        pos = nx.spectral_layout(G)  # positions for all nodes
-        nx.draw(G, pos, with_labels=True, node_color=node_color, edge_color=edge_color, arrows=True)
+        pos = nx.spring_layout(G)  # positions for all nodes
+        nx.draw(G, pos, with_labels=True, node_color=node_color, edge_color=edge_color, node_size=node_size, arrows=True)
         plt.savefig(dag_name, format="png", bbox_inches='tight')
     except Exception as e:
         print(f"Error saving DAG image {dag_name}: {e}")

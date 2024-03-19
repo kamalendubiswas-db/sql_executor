@@ -16,29 +16,26 @@ def parse_sql_file(file_path):
     """
     try:
         with open(file_path, 'r') as file:
-            parent_table_name = os.path.basename(file_path).rsplit('.', 1)[0]
             sql_content = parse_one(file.read())
             root = build_scope(sql_content)
             table_names = []
-            table_object = [
-                        source.name
 
-                        # Traverse the Scope tree, not the AST
-                        for scope in root.traverse()
+            # Traverse the Scope tree, not the AST
+            for scope in root.traverse():
+                
+                # `selected_sources` contains sources that have been selected in this scope, e.g. in a FROM or JOIN clause.
+                # `alias` is the name of this source in this particular scope.
+                # `node` is the AST node instance
+                # if the selected source is a subquery (including common table expressions),
+                # then `source` will be the Scope instance for that subquery.
+                # if the selected source is a table,
+                # then `source` will be a Table instance.
 
-                        # `selected_sources` contains sources that have been selected in this scope, e.g. in a FROM or JOIN clause.
-                        # `alias` is the name of this source in this particular scope.
-                        # `node` is the AST node instance
-                        # if the selected source is a subquery (including common table expressions),
-                        #     then `source` will be the Scope instance for that subquery.
-                        # if the selected source is a table,
-                        #     then `source` will be a Table instance.
-                        for alias, (node, source) in scope.selected_sources.items()
-                        if isinstance(source, exp.Table)
-                    ]
-            for table in table_object:
-                table_names.append(table)
+                for alias, (node, source) in scope.selected_sources.items():
+                        if isinstance(source, exp.Table):
+                            table_names.append(source.name)
             return table_names
+        
     except Exception as e:
         print(f"Error parsing file {file_path}: {e}")
         return []
@@ -71,9 +68,8 @@ def find_sql_files_and_parse(source_sql_directory, executed_sql_directory):
                 try:
                     shutil.copy(file_path, executed_sql_directory)
                     tables = parse_sql_file(file_path)
-                    if tables:
-                        file_name = os.path.basename(file_path).rsplit('.', 1)[0]
-                        table_dependencies[file_name] = tables
+                    file_name = os.path.basename(file_path).rsplit('.', 1)[0]
+                    table_dependencies[file_name] = tables
                 except Exception as e:
                     print(f"Error processing file {file_path}: {e}")
     return table_dependencies
@@ -88,6 +84,12 @@ def write_dependencies_to_yaml(dependencies, output_file):
     """
     try:
         with open(output_file, 'w') as file:
-            yaml.dump(dependencies, file, default_flow_style=False)
+            for key, value in dependencies.items():
+                if not value: # Check if the list is empty
+                    dependencies[key] = None # Replace with None
+            
+        # Convert the modified dictionary to YAML
+            yaml.dump(dependencies, file, sort_keys=True, default_flow_style=False)
+    
     except Exception as e:
         print(f"Error writing to YAML file {output_file}: {e}")
