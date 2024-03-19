@@ -3,6 +3,7 @@ from sqlglot import parse_one, exp
 from sqlglot.optimizer.scope import build_scope
 import yaml
 import shutil
+import logging
 
 def parse_sql_file(file_path):
     """
@@ -37,7 +38,7 @@ def parse_sql_file(file_path):
             return table_names
         
     except Exception as e:
-        print(f"Error parsing file {file_path}: {e}")
+        logging.error(f"Error parsing file {file_path}: {e}")
         return []
 
 def find_sql_files_and_parse(source_sql_directory, executed_sql_directory):
@@ -56,9 +57,9 @@ def find_sql_files_and_parse(source_sql_directory, executed_sql_directory):
     try:
         os.mkdir(executed_sql_directory)
     except FileExistsError:
-        print(f"Directory {executed_sql_directory} already exists.")
+        logging.error(f"Directory {executed_sql_directory} already exists.")
     except Exception as e:
-        print(f"Error creating directory {executed_sql_directory}: {e}")
+        logging.error(f"Error creating directory {executed_sql_directory}: {e}")
         return table_dependencies
 
     for root, dirs, files in os.walk(source_sql_directory):
@@ -71,7 +72,7 @@ def find_sql_files_and_parse(source_sql_directory, executed_sql_directory):
                     file_name = os.path.basename(file_path).rsplit('.', 1)[0]
                     table_dependencies[file_name] = tables
                 except Exception as e:
-                    print(f"Error processing file {file_path}: {e}")
+                    logging.error(f"Error processing file {file_path}: {e}")
     return table_dependencies
 
 def write_dependencies_to_yaml(dependencies, output_file):
@@ -92,4 +93,4 @@ def write_dependencies_to_yaml(dependencies, output_file):
             yaml.dump(dependencies, file, sort_keys=True, default_flow_style=False)
     
     except Exception as e:
-        print(f"Error writing to YAML file {output_file}: {e}")
+        logging.error(f"Error writing to YAML file {output_file}: {e}")

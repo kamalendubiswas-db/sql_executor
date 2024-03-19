@@ -1,16 +1,41 @@
 from datetime import datetime
 import warnings
+import logging
+
 # Import custom library functions
 from lib.sql_parser import find_sql_files_and_parse, write_dependencies_to_yaml
 from lib.task_generator import generate_graph, execute_tasks_sequentially, save_dag
 from lib.connection import get_connection
+
 warnings.filterwarnings("ignore")
 
+# Create a logger
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)  # Set the logging level
+
+# Create a file handler for writing logs to a file
+file_handler = logging.FileHandler('sql_executor.log')
+file_format = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+file_handler.setFormatter(file_format)
+
+# Create a console handler for outputting logs to the terminal
+console_handler = logging.StreamHandler()
+console_format = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+console_handler.setFormatter(console_format)
+
+# Add both handlers to the logger
+logger.addHandler(file_handler)
+logger.addHandler(console_handler)
+
+
 try:
+    logging.info(f"Initiate DBSQL connection")
     connection = get_connection()
     cursor = connection.cursor()
+    logging.info(f"Connection established")
+
 except Exception as e:
-    print(f"**An error occurred while connecting to Databricks SQL warehouse: {e}**")
+    logging.error(f"An error occurred while connecting to Databricks SQL warehouse: {e}")
     exit()
 
 # Specify the root directories for source SQL, dependencies, and DAGs
@@ -33,31 +58,32 @@ dag_name = f'{dag_directory}/{run_epoch_timestamp}_dag_run.png'
 
 try:
     # Find SQL files, parse them to generate the dependency YAML
-    print("*** Starting sql file parsing ***" )
+    logging.info("Starting sql file parsing" )
     dependencies = find_sql_files_and_parse(source_sql_directory, executed_sql_directory)
-    print("*** Completed SQL file parsing ***" )
+    logging.info("Completed SQL file parsing" )
     
-    print("*** Starting writing dependencies to YAML ***" )
+    logging.info("Starting writing dependencies to YAML" )
     write_dependencies_to_yaml(dependencies, output_yaml_file)
-    print("*** Completed writing dependencies to YAML ***" )
+    logging.info("Completed writing dependencies to YAML" )
 
     # Generate the graph and determine execution order through topological sort
-    print("*** Starting generating dependency graph ***" )
+    logging.info("Starting generating dependency graph" )
     G, execution_order = generate_graph(output_yaml_file)
-    print("*** Completed generating dependency graph ***" )
+    logging.info("Completed generating dependency graph" )
 
     # Execute tasks considering their dependencies
-    print("*** Starting executing sql to DBSQL ***" )
+    logging.info("Starting executing sql to DBSQL" )
     execute_tasks_sequentially(G, execution_order, executed_sql_directory, cursor)
-    print("*** Completed executing sql to DBSQL ***" )
+    logging.info("Completed executing sql to DBSQL" )
 
     # Save the DAG visualization to a file
-    print("*** Starting saving the DAG ***" )
+    logging.info("Starting saving the DAG" )
     save_dag(G, dag_name, node_color, edge_color, node_size)
-    print("*** Completed saving the DAG ***" )
+    logging.info("Completed saving the DAG" )
 
     cursor.close()
     connection.close()
+    logging.info(f"Connection closed")
 
 except Exception as e:
-    print(f"An error occurred during the process: {e}")
+    logging.error(f"An error occurred during the process: {e}")

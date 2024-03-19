@@ -2,6 +2,7 @@ import yaml
 import networkx as nx
 import matplotlib.pyplot as plt
 import concurrent.futures
+import logging
 
 from lib.task_executor import execute_task
 
@@ -19,7 +20,7 @@ def generate_graph(dependecy_yaml_file):
         with open(dependecy_yaml_file, 'r') as file:
             dependencies = yaml.safe_load(file)
     except Exception as e:
-        print(f"Error reading YAML file {dependecy_yaml_file}: {e}")
+        logging.error(f"Error reading YAML file {dependecy_yaml_file}: {e}")
         raise
 
     # Create a directed graph
@@ -34,11 +35,12 @@ def generate_graph(dependecy_yaml_file):
                     G.add_node(dep)  # Add dependency node
                     G.add_edge(dep, task)  # Add directed edge from dependency to task
         except Exception as e:
-            print(f"Error generating graph for task -  {task}: {e}")
+            logging.error(f"Error generating graph for task -  {task}: {e}")
             raise
 
     # Ensure the graph is a DAG
     if not nx.is_directed_acyclic_graph(G):
+        logging.error("The graph must be a Directed Acyclic Graph (DAG)")
         raise Exception("The graph must be a Directed Acyclic Graph (DAG)")
 
     # Generate a topological sort of the graph to determine execution order
@@ -69,7 +71,7 @@ def execute_tasks_sequentially(graph, execution_order,directory_name, cursor):
             try:
                 future.result()
             except Exception as e:
-                print(f"Task execution resulted in an exception: {e}")
+                logging.error(f"Task execution resulted in an exception: {e}")
 
 
 def save_dag(G, dag_name, node_color, edge_color, node_size):
@@ -87,6 +89,6 @@ def save_dag(G, dag_name, node_color, edge_color, node_size):
         nx.draw(G, pos, with_labels=True, node_color=node_color, edge_color=edge_color, node_size=node_size, arrows=True)
         plt.savefig(dag_name, format="png", bbox_inches='tight')
     except Exception as e:
-        print(f"Error saving DAG image {dag_name}: {e}")
+        logging.error(f"Error saving DAG image {dag_name}: {e}")
     finally:
         plt.close()  # Close the figure to free up memory

@@ -1,0 +1,27 @@
+2024-03-19 23:46:34 - INFO - Successfully opened session 01eee642-897d-14ee-856d-a77870c14efe
+2024-03-19 23:46:34 - INFO - Starting sql file parsing
+2024-03-19 23:46:34 - INFO - Completed SQL file parsing
+2024-03-19 23:46:34 - INFO - Starting writing dependencies to YAML
+2024-03-19 23:46:34 - INFO - Completed writing dependencies to YAML
+2024-03-19 23:46:34 - INFO - Starting generating dependency graph
+2024-03-19 23:46:34 - INFO - Completed generating dependency graph
+2024-03-19 23:46:34 - INFO - Starting executing sql to DBSQL
+2024-03-19 23:46:55 - INFO - Completed executing sql to DBSQL
+2024-03-19 23:46:55 - INFO - Starting saving the DAG
+2024-03-19 23:46:55 - INFO - Completed saving the DAG
+2024-03-19 23:46:55 - INFO - Closing session 01eee642-897d-14ee-856d-a77870c14efe
+2024-03-19 23:49:11 - INFO - Initiate DBSQL connection
+2024-03-19 23:49:12 - INFO - Successfully opened session 01eee642-e776-1a4a-a542-cd80b3a9c41b
+2024-03-19 23:49:12 - INFO - Connection established
+2024-03-19 23:49:12 - INFO - Starting sql file parsing
+2024-03-19 23:49:12 - INFO - Completed SQL file parsing
+2024-03-19 23:49:12 - INFO - Starting writing dependencies to YAML
+2024-03-19 23:49:12 - INFO - Completed writing dependencies to YAML
+2024-03-19 23:49:12 - INFO - Starting generating dependency graph
+2024-03-19 23:49:12 - INFO - Completed generating dependency graph
+2024-03-19 23:49:12 - INFO - Starting executing sql to DBSQL
+2024-03-19 23:49:38 - INFO - Completed executing sql to DBSQL
+2024-03-19 23:49:38 - INFO - Starting saving the DAG
+2024-03-19 23:49:38 - INFO - Completed saving the DAG
+2024-03-19 23:49:38 - INFO - Closing session 01eee642-e776-1a4a-a542-cd80b3a9c41b
+2024-03-19 23:49:38 - INFO - Connection closed

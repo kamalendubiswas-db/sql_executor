@@ -1,4 +1,5 @@
 import os
+import logging
 
 def read_sql_file(file_name, directory_name):
     """
@@ -20,9 +21,9 @@ def read_sql_file(file_name, directory_name):
             file_content = file.read()
         return file_content
     except FileNotFoundError:
-        print(f"The file {file_name}.sql was not found in {directory_name}.")
+        logging.error(f"The file {file_name}.sql was not found in {directory_name}.")
     except Exception as e:
-        print(f"An error occurred while reading the file {file_name}.sql: {e}")
+        logging.error(f"An error occurred while reading the file {file_name}.sql: {e}")
 
 def execute_task(file_name, directory_name, cursor):
     """
@@ -40,4 +41,4 @@ def execute_task(file_name, directory_name, cursor):
             # Execute the SQL query
             cursor.execute(sql_query)
         except Exception as e:
-            print(f"An error occurred while executing the SQL query from {file_name}.sql: {e}")
+            logging.error(f"An error occurred while executing the SQL query from {file_name}.sql: {e}")
