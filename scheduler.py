@@ -7,6 +7,24 @@ from lib.sql_parser import find_sql_files_and_parse, write_dependencies_to_yaml
 from lib.task_generator import generate_graph, execute_tasks_sequentially, save_dag
 from lib.connection import get_connection
 
+# Specify the root directories for source SQL, dependencies, and DAGs
+source_sql_directory = "source_sql"
+target_sql_directory = "runs/executed_sql"
+dependency_directory = "runs/dependencies"
+dag_directory = "runs/DAGs"
+
+# Generate a unique filename for each run using the current Unix Epoch timestamp
+current_time = datetime.now()
+run_epoch_timestamp = int(current_time.timestamp())
+output_yaml_file = f"{dependency_directory}/{run_epoch_timestamp}_dependencies.yaml"
+executed_sql_directory = f"{target_sql_directory}/{run_epoch_timestamp}"
+
+# Define properties for the DAG visualization
+node_color = "#FF3621"
+edge_color = "#00A972"
+node_size = 1000
+dag_name = f"{dag_directory}/{run_epoch_timestamp}_dag_run.png"
+
 warnings.filterwarnings("ignore")
 
 # Create a logger
@@ -14,7 +32,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)  # Set the logging level
 
 # Create a file handler for writing logs to a file
-file_handler = logging.FileHandler('sql_executor.log')
+file_handler = logging.FileHandler(f"{run_epoch_timestamp}_sql_executor.log")
 file_format = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 file_handler.setFormatter(file_format)
 
@@ -27,7 +45,7 @@ console_handler.setFormatter(console_format)
 logger.addHandler(file_handler)
 logger.addHandler(console_handler)
 
-
+# Establish connection
 try:
     logging.info(f"Initiate DBSQL connection")
     connection = get_connection()
@@ -38,26 +56,10 @@ except Exception as e:
     logging.error(f"An error occurred while connecting to Databricks SQL warehouse: {e}")
     exit()
 
-# Specify the root directories for source SQL, dependencies, and DAGs
-source_sql_directory = 'source_sql'
-target_sql_directory = 'runs/executed_sql'
-dependency_directory = 'runs/dependencies'
-dag_directory = 'runs/DAGs'
-
-# Generate a unique filename for each run using the current Unix Epoch timestamp
-current_time = datetime.now()
-run_epoch_timestamp = int(current_time.timestamp())
-output_yaml_file = f'{dependency_directory}/{run_epoch_timestamp}_dependencies.yaml'
-executed_sql_directory = f'{target_sql_directory}/{run_epoch_timestamp}'
-
-# Define properties for the DAG visualization
-node_color = "#FF3621"
-edge_color = "#00A972"
-node_size = 1000
-dag_name = f'{dag_directory}/{run_epoch_timestamp}_dag_run.png'
-
+# Start the process
 try:
     # Find SQL files, parse them to generate the dependency YAML
+    logging.info(f"Starting run id: {run_epoch_timestamp}")
     logging.info("Starting sql file parsing" )
     dependencies = find_sql_files_and_parse(source_sql_directory, executed_sql_directory)
     logging.info("Completed SQL file parsing" )
@@ -84,6 +86,7 @@ try:
     cursor.close()
     connection.close()
     logging.info(f"Connection closed")
+    logging.info(f"Completed run id: {run_epoch_timestamp}")
 
 except Exception as e:
     logging.error(f"An error occurred during the process: {e}")

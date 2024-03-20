@@ -1,0 +1,17 @@
+2024-03-20 11:00:16 - INFO - Initiate DBSQL connection
+2024-03-20 11:00:16 - INFO - Successfully opened session 01eee6a0-a739-150b-b3b7-45b4856a42df
+2024-03-20 11:00:16 - INFO - Connection established
+2024-03-20 11:00:16 - INFO - Starting run id: 1710928816
+2024-03-20 11:00:16 - INFO - Starting sql file parsing
+2024-03-20 11:00:16 - INFO - Completed SQL file parsing
+2024-03-20 11:00:16 - INFO - Starting writing dependencies to YAML
+2024-03-20 11:00:16 - INFO - Completed writing dependencies to YAML
+2024-03-20 11:00:16 - INFO - Starting generating dependency graph
+2024-03-20 11:00:17 - INFO - Completed generating dependency graph
+2024-03-20 11:00:17 - INFO - Starting executing sql to DBSQL
+2024-03-20 11:00:37 - INFO - Completed executing sql to DBSQL
+2024-03-20 11:00:37 - INFO - Starting saving the DAG
+2024-03-20 11:00:38 - INFO - Completed saving the DAG
+2024-03-20 11:00:38 - INFO - Closing session 01eee6a0-a739-150b-b3b7-45b4856a42df
+2024-03-20 11:00:38 - INFO - Connection closed
+2024-03-20 11:00:38 - INFO - Completed run id: 1710928816
