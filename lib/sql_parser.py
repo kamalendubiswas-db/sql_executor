@@ -34,7 +34,8 @@ def parse_sql_file(file_path):
 
                 for alias, (node, source) in scope.selected_sources.items():
                         if isinstance(source, exp.Table):
-                            table_names.append(source.name)
+                            if source.name not in table_names:
+                                table_names.append(source.name)
             return table_names
         
     except Exception as e:
