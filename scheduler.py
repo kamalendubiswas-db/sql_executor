@@ -5,19 +5,21 @@ import logging
 # Import custom library functions
 from lib.sql_parser import find_sql_files_and_parse, write_dependencies_to_yaml
 from lib.task_generator import generate_graph, execute_tasks_sequentially, save_dag
-from lib.connection import get_connection
+from lib.connect import get_connection
 
 # Specify the root directories for source SQL, dependencies, and DAGs
 source_sql_directory = "source_sql"
 target_sql_directory = "runs/executed_sql"
 dependency_directory = "runs/dependencies"
 dag_directory = "runs/DAGs"
+metadata_directory = "runs/metadata"
 
 # Generate a unique filename for each run using the current Unix Epoch timestamp
 current_time = datetime.now()
 run_epoch_timestamp = int(current_time.timestamp())
 output_yaml_file = f"{dependency_directory}/{run_epoch_timestamp}_dependencies.yaml"
 executed_sql_directory = f"{target_sql_directory}/{run_epoch_timestamp}"
+executed_metadata_directory = f"{metadata_directory}/{run_epoch_timestamp}"
 
 # Define properties for the DAG visualization
 node_color = "#FF3621"
@@ -61,7 +63,7 @@ try:
     # Find SQL files, parse them to generate the dependency YAML
     logging.info(f"Starting run id: {run_epoch_timestamp}")
     logging.info("Starting sql file parsing" )
-    dependencies = find_sql_files_and_parse(source_sql_directory, executed_sql_directory)
+    dependencies = find_sql_files_and_parse(source_sql_directory, executed_sql_directory, executed_metadata_directory)
     logging.info("Completed SQL file parsing" )
     
     logging.info("Starting writing dependencies to YAML" )

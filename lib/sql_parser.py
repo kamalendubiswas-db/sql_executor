@@ -1,9 +1,11 @@
 import os
+import re
 from sqlglot import parse_one, exp
 from sqlglot.optimizer.scope import build_scope
 import yaml
 import shutil
 import logging
+import json
 
 def parse_sql_file(file_path):
     """
@@ -42,7 +44,43 @@ def parse_sql_file(file_path):
         logging.error(f"Error parsing file {file_path}: {e}")
         return []
 
-def find_sql_files_and_parse(source_sql_directory, executed_sql_directory):
+def extract_sql_comments_to_yaml(file_path):
+    
+    """
+    Extract comments from sql files.
+    
+    Args:
+        file_path (str): The path to the SQL file .
+        
+    Returns:
+        list: A list ofcomments that are present in the sql file.
+    """
+    try:
+        # Read the SQL file content
+        with open(file_path, 'r') as file:
+            sql_content = file.read()
+
+        # Regular expression pattern for SQL comments
+        pattern = r'(?:--.*?$|/\*[\s\S]*?\*/)'
+        # Use re.MULTILINE to match the beginning of each line for single-line comments
+        comments = re.findall(pattern, sql_content, re.MULTILINE)
+
+        # Filter out comments that are not at the beginning of the script
+        initial_comments = []
+        for comment in comments:
+            # Check if the comment is at the beginning of the script
+            if sql_content.find(comment) == 0:
+                initial_comments.append(comment)
+                # Remove the comment from the script to check for subsequent comments
+                sql_content = sql_content.replace(comment, '', 1).lstrip()
+            else:
+                break  # Stop if the comment is not at the beginning
+
+        return initial_comments      
+    except Exception as e:
+        logging.error(f"An unexpected error occurred while extracting metadata: {e}")
+
+def find_sql_files_and_parse(source_sql_directory, executed_sql_directory, executed_metadata_directory):
     """
     Find all SQL files in the given directory and its subdirectories,
     parse them to find table dependencies, and copy the files to a new directory.
@@ -55,6 +93,7 @@ def find_sql_files_and_parse(source_sql_directory, executed_sql_directory):
         dict: A dictionary mapping file names to their table dependencies.
     """
     table_dependencies = {}
+    table_metadata = {}
     try:
         os.mkdir(executed_sql_directory)
     except FileExistsError:
@@ -70,10 +109,15 @@ def find_sql_files_and_parse(source_sql_directory, executed_sql_directory):
                 try:
                     shutil.copy(file_path, executed_sql_directory)
                     tables = parse_sql_file(file_path)
+                    metadata = extract_sql_comments_to_yaml(file_path)
                     file_name = os.path.basename(file_path).rsplit('.', 1)[0]
                     table_dependencies[file_name] = tables
+                    table_metadata[file_name] = metadata
                 except Exception as e:
                     logging.error(f"Error processing file {file_path}: {e}")
+    
+    with open(executed_metadata_directory+'.json', 'w') as metadata_file:
+        json.dump(table_metadata, metadata_file, indent=4)
     return table_dependencies
 
 def write_dependencies_to_yaml(dependencies, output_file):

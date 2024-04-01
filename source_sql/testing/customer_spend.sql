@@ -1,3 +1,8 @@
+-- This table identifies the customer spend for the month of december
+
+/*
+comment Customer spend analysis
+*/
 WITH customer_spend_as_of_december AS (
   SELECT
     c.customer_id,

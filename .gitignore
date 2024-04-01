@@ -4,10 +4,13 @@ lib/connect.py
 runs/DAGs/*
 runs/dependencies/*
 runs/executed_sql/*
+runs/metadata/*
 .DS_Store
+*_sql_executor.log
 
 # exception to the rule
 !runs/DAGs/.gitkeep
 !runs/dependencies/.gitkeep 
-!runs/executed_sql/.gitkeep 
+!runs/executed_sql/.gitkeep
+!runs/metadata/.gitkeep  
 

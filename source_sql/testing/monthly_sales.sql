@@ -1,3 +1,6 @@
+/*
+Monthly sales
+*/
 WITH monthly_sales AS (
     SELECT
         t.time_month,
