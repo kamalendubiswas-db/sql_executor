@@ -116,7 +116,7 @@ def find_sql_files_and_parse(source_sql_directory, executed_sql_directory, execu
                 except Exception as e:
                     logging.error(f"Error processing file {file_path}: {e}")
     
-    with open(executed_metadata_directory+'.json', 'w') as metadata_file:
+    with open(executed_metadata_directory+'_metadata.json', 'w') as metadata_file:
         json.dump(table_metadata, metadata_file, indent=4)
     return table_dependencies
 

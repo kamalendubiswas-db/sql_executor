@@ -1,6 +1,6 @@
 # SQL Executor
 
-SQL Executor is a Python-based project designed to automate the parsing, execution of SQL scripts on a Databricks SQL Warehouse environment. The project streamlines the process of handling SQL script dependencies, executing parameterized SQL scripts (optional), and organizing executed scripts.
+SQL Executor is a Python-based project designed to automate the parsing, execution of SQL scripts on a Databricks SQL Warehouse environment. The project streamlines the process of handling SQL script dependencies, executing parameterized SQL scripts (optional), and organizing executed scripts. It also extracts the SQL metadata (comments as of now) and store it as metadata JSON.
 
 ## Features
 
@@ -47,19 +47,25 @@ To get started with SQL Executor, follow these steps:
 │   ├── run.py
 │   └── test.py
 ├── requirements.txt
-├── runs                                    #target directory
-│   ├── DAGs                                #dags generated
-│   │   ├── 1710605017_dag_run.png
-│   ├── dependencies                        #dependecy yaml files
-│   │   ├── 1710605017_dependencies.yaml
-│   └── executed_sql                        #executed sql files
-│       ├── 1710605017                      #unix epoch
-│       │   ├── business_order.sql
-│       │   ├── dim_customer.sql
-│       │   ├── dim_order.sql
-│       │   ├── fact_order.sql
-│       │   ├── raw_customers.sql
-│       │   └── raw_orders.sql
+├── runs                                    #target directory for each run
+│   ├── DAGs                                #generated dag
+│   │   └── 1711994151_dag_run.png
+│   ├── dependencies                        #dependency yaml
+│   │   └── 1711994151_dependencies.yaml
+│   ├── executed_sql                        #executed sql
+│   │   └── 1711994151
+│   │       ├── business_order.sql
+│   │       ├── customer_spend.sql
+│   │       ├── dim_customer.sql
+│   │       ├── dim_order.sql
+│   │       ├── fact_order.sql
+│   │       ├── insert_test.sql
+│   │       ├── monthly_sales.sql
+│   │       ├── order_line_summary.sql
+│   │       ├── raw_customers.sql
+│   │       └── raw_orders.sql
+│   └── metadata                            #metadata json (comments)
+│       └── 1711994151.json
 ├── scheduler.py                            #main scheduler
 └── source_sql                              #source directory for sql files
     ├── business
