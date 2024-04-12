@@ -14,9 +14,11 @@ SQL Executor is a Python-based project designed to automate the parsing, executi
 
 4. **SQL Execution in Databricks**: Executes the SQL scripts in a Databricks SQL Warehouse, harnessing the power and scalability of Databricks for data processing and analysis.
 
-5. **Script Management**: Stores all executed SQL scripts into a separate directory, providing a clear record of the scripts that have been run and facilitating version control and auditing.
+5. **Metadata Extraction**: Extracts all the metadata from the SQL scripts (comments are included as of now) and creates a `metadata.json` file.
 
-6. **Databricks SQL Connector**: Uses the [Databricks SQL Connector for Python](https://docs.databricks.com/en/dev-tools/python-sql-connector.html) to establish a connection to the Databricks SQL Warehouse, ensuring a seamless and secure integration.
+6. **Script Management**: Stores all executed SQL scripts into a separate directory, providing a clear record of the scripts that have been run and facilitating version control and auditing.
+
+7. **Databricks SQL Connector**: Uses the [Databricks SQL Connector for Python](https://docs.databricks.com/en/dev-tools/python-sql-connector.html) to establish a connection to the Databricks SQL Warehouse, ensuring a seamless and secure integration.
 
 ## Getting Started
 
