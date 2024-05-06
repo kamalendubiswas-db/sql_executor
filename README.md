@@ -39,12 +39,10 @@ To get started with SQL Executor, follow these steps:
 ├── README.md
 ├── config                                  #optional config 
 ├── lib                                     #base code            
-│   ├── connect.py
 │   ├── connection.py
 │   ├── sql_parser.py
 │   ├── task_executor.py
-│   └── task_generator.py
-├── no_used                                 #test files not used
+│   ├── task_generator.py
 │   ├── demo_task_executor.py
 │   ├── run.py
 │   └── test.py
